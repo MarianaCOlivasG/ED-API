@@ -1,38 +1,38 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { CreateNewDto } from './dto/create-new.dto';
-import { UpdateNewDto } from './dto/update-new.dto';
+import { CreateNoticeDto } from './dto/create-notice.dto';
+import { UpdateNoticeDto } from './dto/update-notice.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { News } from './entities/new.entity';
+import { Notices } from './entities/new.entity';
 import { Model } from 'mongoose';
 
 @Injectable()
-export class NewService {
+export class NoticesService {
 
 
-  constructor( @InjectModel(News.name)
-  private readonly newModel: Model<News> ){}
+  constructor( @InjectModel(Notices.name)
+  private readonly noticeModel: Model<Notices> ){}
 
 
 
- async register(createNewDto: CreateNewDto) {
+ async register(createNoticeDto: CreateNoticeDto) {
    
     try {
 
       const data = {
-        ...createNewDto
+        ...createNoticeDto
       }
 
       // console.log(data)
 
       // console.log("-----------");
       
-      const createdNew = await this.newModel.create(data);
+      const createdNotice = await this.noticeModel.create(data);
 
       // console.log(createdNew)
 
       return {
         status: true,
-        createdNew
+        createdNotice
       };
       
     } catch (error) {
@@ -43,25 +43,25 @@ export class NewService {
   }
 
 
-  async update(id: string, updateNewDto: UpdateNewDto) {
+  async update(id: string, updateNoticeDto: UpdateNoticeDto) {
     
-    const New = await this.newModel.findById( id );
+    const Notice = await this.noticeModel.findById( id );
    
-    if ( !New ) {
-      return new NotFoundException({ message: `No existe una noticia con el ID ${id}` })
+    if ( !Notice ) {
+      return new NotFoundException({ message: `No existe un aviso con el ID ${id}` })
     }
 
 
     try {
 
-          const newUpdate = await this.newModel.findByIdAndUpdate( id, updateNewDto, {new: true});
+          const noticeUpdate = await this.noticeModel.findByIdAndUpdate( id, updateNoticeDto, {new: true});
 
 
 
       return {
         status: true,
-        message: 'Noticia actualizada con éxito.',
-        newUpdate
+        message: 'Aviso actualizada con éxito.',
+        noticeUpdate
       };
       
     } catch (error) {
@@ -75,15 +75,15 @@ async findSlug(id:string){
 
   console.log(id);
   
-  const New = await this.newModel.find( {slug: id} );
-  if ( !New ) {
+  const Notice = await this.noticeModel.find( {slug: id} );
+  if ( !Notice ) {
     return new NotFoundException({ message: `intenta con otro diferente a ${id}` })
   }
 
 
   return {
     status: true,
-    New
+    Notice
   }
   
 }
@@ -93,15 +93,15 @@ async findAll(){
 
 
   
-  const News = await this.newModel.find( {isVisible:true} );
-  if ( !News ) {
+  const Notices = await this.noticeModel.find( {isVisible:true} );
+  if ( !Notices ) {
     return new NotFoundException({ message: `No hay noticias disponibles` })
   }
 
 
   return {
     status: true,
-    News
+    Notices
   }
   
 }

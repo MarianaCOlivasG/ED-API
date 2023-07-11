@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule }  from '@nestjs/config'
 import { EnvCongifuration } from './config/app.config';
 import { AuthModule } from './auth/auth.module';
-import { NewsModule } from './news/new.module';
+import { NoticesModule } from './notices/notice.module';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { NewsModule } from './news/new.module';
     }),
     MongooseModule.forRoot(process.env.MONGODB),
     AuthModule,
-    NewsModule,
+    NoticesModule,
   ],
   controllers: [
 

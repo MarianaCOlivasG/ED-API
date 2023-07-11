@@ -19,6 +19,13 @@ export class NewsController {
     return this.newService.update( id, updateNewDto );
   }
 
+  @Get('/all')
+  all() {
+    return this.newService.findAll();
+  }
+
+
+
   @Get('/findBySlug/:id')
   findSlug(
     @Param('id') id: string,) {
